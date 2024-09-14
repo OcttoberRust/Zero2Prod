@@ -2,9 +2,9 @@
 use std::net::TcpListener;
 //No .await call, therefore no need for 'spawn_app' to be async now.
 //We are also running tests, so it is not worth it to propagate errors:
-//if we fail to perform the required setup we can just panic and crash 
+//if we fail to perform the required setup we can just panic and crash
 //all the things
-fn spawn_app() -> String { 
+fn spawn_app() -> String {
     let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind random port");
     //We retrieve the port assigne dto us by the OS
     let port = listener.local_addr().unwrap().port();
@@ -21,7 +21,7 @@ fn spawn_app() -> String {
 // 'tokio::test' is the testing equivalent of 'tokio::main'.
 // It also spare you from a having to specify the '#[test]' attribute
 //
-// You can inspect what code gets generated using 
+// You can inspect what code gets generated using
 // 'cargo expand --test health_check' (<- name of the test file)
 
 #[tokio::test]
@@ -42,7 +42,7 @@ async fn health_check_works() {
 }
 
 #[tokio::test]
-async fn subscribe_returns_a_200_for_valid_form_data(){
+async fn subscribe_returns_a_200_for_valid_form_data() {
     //Arrange
     let app_address = spawn_app();
     let client = reqwest::Client::new();
@@ -62,14 +62,14 @@ async fn subscribe_returns_a_200_for_valid_form_data(){
 }
 
 #[tokio::test]
-async fn subscribe_returns_a_400_when_data_is_missing(){
-    //Arrange 
+async fn subscribe_returns_a_400_when_data_is_missing() {
+    //Arrange
     let app_address = spawn_app();
     let client = reqwest::Client::new();
     let test_cases = vec![
         ("name=le%20guin", "missing the email"),
         ("email=ursula_le_guiin%40gmail.com", "missing the name"),
-        ("", "missing both name and email")
+        ("", "missing both name and email"),
     ];
 
     for (invalid_body, error_message) in test_cases {

@@ -1,10 +1,10 @@
 //! src/lib.rs
-pub mod configuration;
+//pub mod configuration;
 pub mod routes;
-pub mod startup;
+//pub mod startup;
 
-use actix_web::{web, App, HttpResponse, HttpServer};
 use actix_web::dev::Server;
+use actix_web::{web, App, HttpResponse, HttpServer};
 use std::net::TcpListener;
 
 async fn health_check() -> HttpResponse {
@@ -29,9 +29,9 @@ pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
         App::new()
             .route("/health_check", web::get().to(health_check))
             .route("/subscriptions", web::post().to(subscribe))
-        })
-        .listen(listener)?
-        .run();
-        //No .await here!
-        Ok(server)
+    })
+    .listen(listener)?
+    .run();
+    //No .await here!
+    Ok(server)
 }
